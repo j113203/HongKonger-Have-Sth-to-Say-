@@ -1,0 +1,54 @@
+.bubble {
+	display: inline-block;
+	position:relative;
+	padding: 1em;	
+	color:#333;
+	background:#eee;
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	border-radius:10px;
+	margin: 1em;
+}
+.bubble:after {
+  content:"";
+  position:absolute;
+  bottom: 0px;
+  left: -10px;
+  border:10px solid transparent;
+  border-bottom-color:#eee;
+  display: inline-block;
+  width:0;
+}
+.me .bubble:after {
+	left: auto;
+	right: -10px;
+}
+.me{
+	float: right;
+}
+.chat .bubble{
+	order: 3;
+}
+.chat .user{
+	order: 2;
+	align-self: flex-end;
+}
+.chat .date{
+	order: 4;
+	color:#E0E0E0;
+	align-self: flex-end;
+}
+.chat{
+	display: flex;
+	clear: both;
+}
+.me .bubble{
+	order: 1;
+	background: #BDBDBD;
+}
+.me .date{
+	order: 0;
+}
+.me .bubble:after {
+	border-bottom-color: #BDBDBD;
+}	
