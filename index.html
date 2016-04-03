@@ -67,10 +67,10 @@
 			for (i=0;i<arguments.length;i++){
 				switch(arguments[i]){
 					case "post":
-						body.innerHTML +='<a class="button" href="#"><i class="fa fa-plus fa-1x"></i> 新討論</a>';
+						body.innerHTML +='<a class="button" href="#"><i class="fa fa-plus fa-1x"></i> 話題</a>';
 						break;
 					case "return":
-						body.innerHTML +='<a class="button" onclick="$switch_(\'page_post\')"><i class="fa fa-chevron-circle-left fa-1x"></i> 返回</a>';
+						body.innerHTML +='<a class="button" onclick="$return(\'page_post\')"><i class="fa fa-chevron-circle-left fa-1x"></i> 返回</a>';
 						break;
 					case "refresh":
 						body.innerHTML +='<a class="button" onclick="$switch($me.page)"><i class="fa fa-refresh fa-1x"></i> 刷新</a>';
@@ -79,7 +79,7 @@
 			}
 		}
 		function $switch(page){
-			$switch_(page);
+			$return(page);
 			var body = document.querySelector("#"+page+" .body");
 			body.innerHTML="";
 			switch(page){
@@ -92,7 +92,6 @@
 						for(posts in JSON[title].posts) {
 							$post(body,JSON[title].posts[posts].title,0);
 						}
-						$functionKey("post","refresh");
 						document.body.scrollTop = document.documentElement.scrollTop = 0;
 					},function(){
 						$title($me.topic,"話題載入失敗。");
@@ -104,7 +103,6 @@
 					$comments(body,"Tom","hello",new Date().getTime());
 					$comments(body,"Marry","hello",new Date().getTime());
 					$comments(body,"j113203","Bonjour <3",new Date().getTime());
-					$functionKey("return","refresh");
 					document.body.scrollTop = document.documentElement.scrollTop = 0;
 					break;
 			}
@@ -132,6 +130,17 @@
 				}else if (page_[i].id.startsWith("page_")){
 					page_[i].style.display = "none";
 				}
+			}
+		}
+		function $return(page){
+			$switch_(page);
+			switch(page){
+				case "page_post":
+					$functionKey("post","refresh");
+					break;
+				case "page_topic":
+					$functionKey("return","refresh");
+					break;
 			}
 		}
 	</script>
