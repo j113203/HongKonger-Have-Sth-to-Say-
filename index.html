@@ -70,7 +70,7 @@
 						body.innerHTML +='<a class="button" href="#"><i class="fa fa-plus fa-1x"></i> 新討論</a>';
 						break;
 					case "return":
-						body.innerHTML +='<a class="button" onclick="$switch(\'page_post\')"><i class="fa fa-chevron-circle-left fa-1x"></i> 返回</a>';
+						body.innerHTML +='<a class="button" onclick="$switch_(\'page_post\')"><i class="fa fa-chevron-circle-left fa-1x"></i> 返回</a>';
 						break;
 					case "refresh":
 						body.innerHTML +='<a class="button" onclick="$switch($me.page)"><i class="fa fa-refresh fa-1x"></i> 刷新</a>';
@@ -79,15 +79,7 @@
 			}
 		}
 		function $switch(page){
-			$me.page = page;
-			var page_ = document.getElementsByTagName('div');
-			for (i=0;i<page_.length;i++){
-				if (page_[i].id==page){
-					page_[i].style.display = "block";
-				}else if (page_[i].id.startsWith("page_")){
-					page_[i].style.display = "none";
-				}
-			}
+			$switch_(page);
 			var body = document.querySelector("#"+page+" .body");
 			body.innerHTML="";
 			switch(page){
@@ -117,7 +109,7 @@
 					break;
 			}
 		}
-		function $post(a,t,d){a.innerHTML+="<tr><td onclick='$switch(\"page_topic\")'>"+t+"</td><td>"+d+"</td></tr>"}
+		function $post(a,t,d){a.innerHTML+="<tr><td onclick='$title(\""+t+"\",\"\");$switch(\"page_topic\")'>"+t+"</td><td>"+d+"</td></tr>"}
 		function $comments(a,e,t,s){a.innerHTML+='<div class="chat'+(e==$me.name?" me":"")+'"><a class="user">'+e+'</a><div class="bubble">'+t+'</div><a class="date">'+simplify(s)+"</a></div>"}function simplify(e){var t=new Date;return e=new Date(e),e.toISOString().substr(0,10)==t.toISOString().substr(0,10)?e.getHours()==t.getHours()?e.getMinutes()==t.getMinutes()?t.getSeconds()-e.getSeconds()+"秒前":t.getMinutes()-e.getMinutes()+"分鐘前":t.getHours()-e.getHours()+"小時前":e.getFullYear()==t.getFullYear()?e.getMonth()==t.getMonth()?t.getDate()-e.getDate()+"日前":t.getMonth()-e.getMonth()+"個月前":t.getFullYear()-e.getFullYear()+"年前"}
 		function $title(title,description){
 			var topic = document.getElementById("topic");
@@ -130,6 +122,17 @@
 			var regex = new RegExp( regexS );
 			var results = regex.exec( location.href );
 			return results == null ? null : results[1];
+		}
+		function $switch_(page){
+			$me.page = page;
+			var page_ = document.getElementsByTagName('div');
+			for (i=0;i<page_.length;i++){
+				if (page_[i].id==page){
+					page_[i].style.display = "block";
+				}else if (page_[i].id.startsWith("page_")){
+					page_[i].style.display = "none";
+				}
+			}
 		}
 	</script>
 	<script>
