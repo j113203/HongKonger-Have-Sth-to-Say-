@@ -63,16 +63,18 @@ th:first-child,td:first-child {
 	padding-left: 0; }
 th:last-child,td:last-child {
 	padding-right: 0; }
+td:first-child{
+	cursor:pointer;}
 th.score{
 	width: 5em;}
-/* functionkey
+/* FnKey
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#functionKey{
+#FnKey{
 	position: fixed;
 	bottom: 0;
 	right: 0;
 	margin-bottom: 1em;}
-#functionKey a{
+#FnKey a{
 	display: block;
 }
 .button{
