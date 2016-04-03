@@ -15,7 +15,7 @@
 			港人有<u>云</u>
 			<i class="inline fa fa-comment"></i>
 		</div>
-		<form method="get" class="search">
+		<form method="get" class="search" onSubmit="$me.topic = topic.value;$switch('page_post');return false">
 			<input class="borderless full-width" type="text" placeholder="討論話題 ......" name="topic"><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
 		</form>
 	</nav>
