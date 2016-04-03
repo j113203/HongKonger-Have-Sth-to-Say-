@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+
+	<meta charset="utf-8">
+	<title>港人有云</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  
+	<link href="css/normalize.css" rel="stylesheet" type="text/css">
+	<link href="favicon.ico" rel="icon" type="image/x-icon">
+</head>
+<body>
+	<nav>
+		<div class="inline logo">
+			港人有<u>云</u>
+			<i class="inline fa fa-comment"></i>
+		</div>
+		<div class="search">
+			<input class="borderless full-width" type="text" placeholder="討論話題 ......"><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
+		</div>
+	</nav>
+	<div class="container">
+		<div id="xxx">
+			
+		</div>
+	</div>
+	<link href="fonts/font.css" rel="stylesheet" type="text/css">
+	<link href="css/core.css" rel="stylesheet" type="text/css">
+	<link href="css/speech-bubbles.css" rel="stylesheet" type="text/css">
+	<script>
+		var me = "j113203";
+		function comments(e,t,s){document.getElementById("xxx").innerHTML+='<div class="chat'+(e==me?" me":"")+'"><a class="user">'+e+'</a><div class="bubble">'+t+'</div><a class="date">'+simplify(s)+"</a></div>"}function simplify(e){var t=new Date;return e=new Date(e),e.toISOString().substr(0,10)==t.toISOString().substr(0,10)?e.getHours()==t.getHours()?e.getMinutes()==t.getMinutes()?t.getSeconds()-e.getSeconds()+"秒前":t.getMinutes()-e.getMinutes()+"分鐘前":t.getHours()-e.getHours()+"小時前":e.getFullYear()==t.getFullYear()?e.getMonth()==t.getMonth()?t.getDate()-e.getDate()+"日前":t.getMonth()-e.getMonth()+"個月前":t.getFullYear()-e.getFullYear()+"年前"}
+		comments("hey","hello 1",Date.parse(new Date()));
+		comments("LOL","hello 2",new Date().getTime());
+		comments("j113203","hello 3",new Date('2016-4-2'));
+		comments("hi","<3",new Date().getTime());
+		comments("j113203","ha",new Date('2016-4-2'));
+		comments("j113203","ha",new Date('2016-4-2'));
+		comments("j113203","ha",new Date('2016-4-2'));
+		comments("j113203","ha",new Date('2016-4-2'));
+		comments("j113203","ha",new Date('2016-4-2'));
+	</script>
+</body>
+</html>

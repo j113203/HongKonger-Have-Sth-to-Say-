@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-HK">
 <head>
-
 	<meta charset="utf-8">
 	<title>港人有云</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
-
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-  
 	<link href="css/normalize.css" rel="stylesheet" type="text/css">
 	<link href="favicon.ico" rel="icon" type="image/x-icon">
 </head>
@@ -23,6 +20,8 @@
 		</form>
 	</nav>
 	<div class="container">
+		<div id="topic">
+		</div>
 		<div id="page_post">
 			<table class="full-width">
 				<thead>
@@ -36,8 +35,7 @@
 			</table>
 		</div>
 		<div id="page_topic">
-			<div class="body">
-			
+			<div class="body">		
 			</div>
 		</div>
 	</div>
@@ -48,6 +46,21 @@
 	<link href="css/core.css" rel="stylesheet" type="text/css">
 	<script>
 		String.prototype.startsWith = function(searchString, position){position = position || 0;return this.substr(position, searchString.length) === searchString;};
+		function jhr( url, callback, error ) {
+			var xhr = new XMLHttpRequest();
+			xhr.responseJSON = null;
+			xhr.open( 'GET', url );
+			xhr.setRequestHeader( 'Content-Type', 'application/json' );
+			xhr.addEventListener('load',  function () {
+				xhr.responseJSON = JSON.parse( xhr.responseText );
+				callback( xhr.responseJSON, xhr );
+			});
+			xhr.addEventListener('error',  function () {
+				error( xhr );
+			});
+			xhr.send();
+			return xhr;
+		}
 		function $functionKey(){
 			var body = document.getElementById("functionKey");
 			body.innerHTML="";
@@ -65,7 +78,7 @@
 				}
 			}
 		}
-		function $switch(page){	
+		function $switch(page){
 			$me.page = page;
 			var page_ = document.getElementsByTagName('div');
 			for (i=0;i<page_.length;i++){
@@ -79,15 +92,26 @@
 			body.innerHTML="";
 			switch(page){
 				case "page_post":
-					for(i=1;i<=100;i++){
-						$post(body,"帖子"+i,0);
-					}
-					$functionKey("post","refresh");
-					document.body.scrollTop = document.documentElement.scrollTop = 0;
+					document.querySelector("nav .search input").placeholder=$me.topic;
+					$title($me.topic,"話題載入中......");
+					jhr("JSON/posts.json?topic="+$me.topic,function(JSON){
+						var title = Object.keys(JSON)[0];
+						$title(title,JSON[title].description);
+						for(posts in JSON[title].posts) {
+							$post(body,JSON[title].posts[posts].title,0);
+						}
+						$functionKey("post","refresh");
+						document.body.scrollTop = document.documentElement.scrollTop = 0;
+					},function(){
+						$title($me.topic,"話題載入失敗。");
+						document.getElementById(page).style.display = "none";
+						$functionKey("refresh");
+					});
 					break;
 				case "page_topic":
 					$comments(body,"Tom","hello",new Date().getTime());
-					$comments(body,"j113203","haha",new Date().getTime());
+					$comments(body,"Marry","hello",new Date().getTime());
+					$comments(body,"j113203","Bonjour <3",new Date().getTime());
 					$functionKey("return","refresh");
 					document.body.scrollTop = document.documentElement.scrollTop = 0;
 					break;
@@ -95,13 +119,29 @@
 		}
 		function $post(a,t,d){a.innerHTML+="<tr><td onclick='$switch(\"page_topic\")'>"+t+"</td><td>"+d+"</td></tr>"}
 		function $comments(a,e,t,s){a.innerHTML+='<div class="chat'+(e==$me.name?" me":"")+'"><a class="user">'+e+'</a><div class="bubble">'+t+'</div><a class="date">'+simplify(s)+"</a></div>"}function simplify(e){var t=new Date;return e=new Date(e),e.toISOString().substr(0,10)==t.toISOString().substr(0,10)?e.getHours()==t.getHours()?e.getMinutes()==t.getMinutes()?t.getSeconds()-e.getSeconds()+"秒前":t.getMinutes()-e.getMinutes()+"分鐘前":t.getHours()-e.getHours()+"小時前":e.getFullYear()==t.getFullYear()?e.getMonth()==t.getMonth()?t.getDate()-e.getDate()+"日前":t.getMonth()-e.getMonth()+"個月前":t.getFullYear()-e.getFullYear()+"年前"}
+		function $title(title,description){
+			var topic = document.getElementById("topic");
+			topic.style.display = "block";
+			topic.innerHTML="<h3>"+title+"</h3><p>"+description+"</p>";
+		}
+		function $queryString( name) {
+			name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			var regexS = "[\\?&]"+name+"=([^&#]*)";
+			var regex = new RegExp( regexS );
+			var results = regex.exec( location.href );
+			return results == null ? null : results[1];
+		}
 	</script>
 	<script>
 		var $me = {
 			name : "j113203",
-			page : "page_post"
+			page : "page_post",
+			topic : ""
 		};
-		$switch($me.page);
+		if ($queryString("topic")){
+			$me.topic = $queryString("topic");
+			$switch("page_post");
+		}
 		//$switch("page_topic");
 	</script>
 </body>

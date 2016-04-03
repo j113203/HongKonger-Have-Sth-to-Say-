@@ -48,9 +48,13 @@ nav .search button{
 .inline{
 	display: inline;}
 .container{
-	margin-top: 6em;}
+	margin-top: 6em;
+	padding-bottom: 10em}
 /* page_post
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+#page_post{
+	display: none;
+}
 th,td {
 	padding: 12px 15px;
 	text-align: left;
@@ -171,6 +175,9 @@ body::-webkit-scrollbar-corner{
 }
 /* page_topic
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+#page_topic{
+	display: none;
+}
 .bubble {
 	display: inline-block;
 	position:relative;
@@ -224,4 +231,14 @@ body::-webkit-scrollbar-corner{
 }
 .me .bubble:after {
 	border-bottom-color: #BDBDBD;
+}
+/* topic
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#topic{
+	top: 5em;
+	margin-left: -10%;
+	display: none;
+	padding: 1em;
+	color: white;
+	background-color: rgb(119, 119, 119);
 }
