@@ -16,7 +16,7 @@
 			<i class="inline fa fa-comment"></i>
 		</div>
 		<form method="get" class="search" onSubmit='return $.search(topic.value)'>
-			<input class="borderless full-width" type="text" placeholder="討論話題 ……" name="topic"><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
+			<input class="borderless full-width" type="text" placeholder="討論話題 ……" name="topic" required><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
 		</form>
 	</nav>
 	<div class="container">
@@ -40,6 +40,9 @@
 			<div class="body">		
 			</div>
 		</div>
+		<div id="page_homepage">
+			This is the homepage
+		</div>
 	</div>
 	<div id="FnKey">	
 	</div>
@@ -47,41 +50,35 @@
 		
 	</script>
 	<script>
-		/* Unity
-		–––––––––––––––––––––––––––––––––––––––––––––––––– */
 		String.prototype.startsWith = function(searchString, position){position = position || 0;return this.substr(position, searchString.length) === searchString;};
-		var getJSON = function(url, successHandler, errorHandler) {
-			var xhr = typeof XMLHttpRequest != 'undefined'? new XMLHttpRequest(): new ActiveXObject('Microsoft.XMLHTTP');
-			xhr.open('get', url, true);
-			xhr.onreadystatechange = function() {
-				var status;
-				var data;
-				if (xhr.readyState == 4) {
-					status = xhr.status;
-					if (status == 200) {
-						data = JSON.parse(xhr.responseText);
-						successHandler && successHandler(data);
-					} else {
-						errorHandler && errorHandler(status);
-					}
-				}
-			};
-			xhr.send();
-		};
-		/* PagePost
+		/* Core
 		–––––––––––––––––––––––––––––––––––––––––––––––––– */
 		var $ = {
-			search : function(topic){				
-				$.page_post.topic=topic;				
-				$.page_post.refresh();
+			/* Unity
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
+			unity : {
+				getJSON : function(e){return new Promise(function(n,t){var o=new XMLHttpRequest;o.open("get",e,!0),o.responseType="json",o.onload=function(){var e=o.status;200==e?n(o.response):t(e)},o.send()})}
+			},
+			/* Handle the search
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
+			search : function(topic){
+				if (topic){					
+					$.page_post.topic=topic;				
+					$.page_post.refresh();
+					window.location.hash = "#"+topic;
+				}
 				return false;
 			},
+			/* Handle the topic enter
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
 			topic : function(id,topic){
 				$.page_topic.id=id;
 				$.page_topic.topic=topic;
 				$.page_topic.refresh();
 				return false;
 			},
+			/* Function Key
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
 			Fn : {
 				element : document.getElementById("FnKey"),
 				clear : function(){
@@ -101,6 +98,8 @@
 					return this;
 				}
 			},
+			/* Handle the ui switch
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
 			clear : function(page){
 				$me.page=$[page];
 				page_=document.getElementsByTagName('div');
@@ -116,6 +115,8 @@
 				}
 				return $me.page;
 			},
+			/* Handle the title
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
 			title: {
 				name : "topic",
 				element : {
@@ -146,6 +147,8 @@
 					return this;
 				}
 			},
+			/* Handle the page_post
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
 			page_post : {
 				title : "",
 				body : "",
@@ -159,7 +162,7 @@
 					$.Fn.clear();
 					this.element().innerHTML="";
 					$.title.head(this.topic).body("話題載入中 ……").show();
-					getJSON("JSON/posts.json?topic="+this.topic,function(JSON){
+					$.unity.getJSON("JSON/posts.json?topic="+this.topic).then(function(JSON) {
 						$.page_post.title=JSON.topic;
 						$.page_post.body=JSON.motd;
 						for(posts in JSON.posts) {
@@ -185,6 +188,8 @@
 					return this;
 				}
 			},
+			/* Handle the page_topic
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
 			page_topic : {
 				title : "",
 				body : "",
@@ -199,12 +204,11 @@
 					$.Fn.clear();
 					this.element().innerHTML="";
 					$.title.head(this.topic).body("討論載入中 ……").show();
-					getJSON("JSON/post.json?topic="+$.page_post.topic+"&id="+this.id,function(JSON){
+					$.unity.getJSON("JSON/post.json?topic="+$.page_post.topic+"&id="+this.id).then(function(JSON) {
 						$.page_topic.title=JSON.post;
 						$.page_topic.body=JSON.motd;
 						for(reply in JSON.reply) {							
 							reply = JSON.reply[reply];
-							console.log(reply);
 							$.page_topic.post(reply.user,reply.text,parseInt(reply.date));
 						}
 						$.clear("page_topic");
@@ -230,15 +234,16 @@
 					return this;
 				}
 			}
-		};
-		
-		
+		};		
 		/* Setting
 		–––––––––––––––––––––––––––––––––––––––––––––––––– */
 		var $me = {
 			name : "j113203",
 			page : ""
 		};
+		(function(){
+			$.search(window.location.hash.slice(1));
+		})();
 	</script>
 </body>
 </html>
