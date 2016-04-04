@@ -162,7 +162,7 @@
 					$.Fn.clear();
 					this.element().innerHTML="";
 					$.title.head(this.topic).body("話題載入中 ……").show();
-					$.unity.getJSON("JSON/getPosts.php?topic="+this.topic).then(function(JSON) {
+					$.unity.getJSON("http://192.168.137.117:888/JSON/getPosts.php?topic="+this.topic).then(function(JSON) {
 						$.page_post.title=JSON.topic;
 						$.page_post.body=JSON.motd;
 						for(posts in JSON.posts) {
@@ -204,7 +204,7 @@
 					$.Fn.clear();
 					this.element().innerHTML="";
 					$.title.head(this.topic).body("討論載入中 ……").show();
-					$.unity.getJSON("JSON/getPost.php?topic="+$.page_post.topic+"&id="+this.id).then(function(JSON) {
+					$.unity.getJSON("http://192.168.137.117:888/JSON/getPost.php?topic="+$.page_post.topic+"&id="+this.id).then(function(JSON) {
 						$.page_topic.title=JSON.post;
 						$.page_topic.body=JSON.motd;
 						for(reply in JSON.reply) {							
