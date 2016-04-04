@@ -57,7 +57,7 @@
 			/* Unity
 			–––––––––––––––––––––––––––––––––––––––––––––––––– */
 			unity : {
-				getJSON : function(e){return new Promise(function(n,t){var o=new XMLHttpRequest;o.open("get",e,!0),o.responseType="json",o.onload=function(){var e=o.status;200==e?n(o.response):t(e)},o.send()})}
+				getJSON : function(e){return new Promise(function(n,t){var o=new XMLHttpRequest;o.open("get",e,!0),o.responseType="json",o.onload=function(){var e=o.status;200==e?n(o.response):t(e)},o.onerror=function(){t()},o.send()})}
 			},
 			/* Handle the search
 			–––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -162,7 +162,7 @@
 					$.Fn.clear();
 					this.element().innerHTML="";
 					$.title.head(this.topic).body("話題載入中 ……").show();
-					$.unity.getJSON("JSON/posts.json?topic="+this.topic).then(function(JSON) {
+					$.unity.getJSON("JSON/getPosts.php?topic="+this.topic).then(function(JSON) {
 						$.page_post.title=JSON.topic;
 						$.page_post.body=JSON.motd;
 						for(posts in JSON.posts) {
@@ -204,7 +204,7 @@
 					$.Fn.clear();
 					this.element().innerHTML="";
 					$.title.head(this.topic).body("討論載入中 ……").show();
-					$.unity.getJSON("JSON/post.json?topic="+$.page_post.topic+"&id="+this.id).then(function(JSON) {
+					$.unity.getJSON("JSON/getPost.php?topic="+$.page_post.topic+"&id="+this.id).then(function(JSON) {
 						$.page_topic.title=JSON.post;
 						$.page_topic.body=JSON.motd;
 						for(reply in JSON.reply) {							
