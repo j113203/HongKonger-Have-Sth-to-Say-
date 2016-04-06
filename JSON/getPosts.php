@@ -1,4 +1,5 @@
 <?php
+include 'lib/config.php';
 
 $topic=htmlspecialchars($_GET["topic"]);
 

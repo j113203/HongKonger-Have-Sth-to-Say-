@@ -15,9 +15,11 @@
 			港人有<u>云</u>
 			<i class="inline fa fa-comment"></i>
 		</div>
-		<form method="get" class="search" onSubmit='return $.search(topic.value)'>
-			<input class="borderless full-width" type="text" placeholder="討論話題 ……" name="topic" required><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
-		</form>
+		<div class="inline">
+			<form method="get" class="search" onSubmit='return $.search(topic.value)'>
+				<input class="borderless full-width" type="text" placeholder="討論話題 ……" name="topic" required><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
+			</form>
+		</div>
 	</nav>
 	<div class="container">
 		<div id="topic">
@@ -162,7 +164,7 @@
 					$.Fn.clear();
 					this.element().innerHTML="";
 					$.title.head(this.topic).body("話題載入中 ……").show();
-					$.unity.getJSON("http://192.168.137.117:888/JSON/getPosts.php?topic="+this.topic).then(function(JSON) {
+					$.unity.getJSON("JSON/getPosts.php?topic="+this.topic).then(function(JSON) {
 						$.page_post.title=JSON.topic;
 						$.page_post.body=JSON.motd;
 						for(posts in JSON.posts) {
@@ -204,7 +206,7 @@
 					$.Fn.clear();
 					this.element().innerHTML="";
 					$.title.head(this.topic).body("討論載入中 ……").show();
-					$.unity.getJSON("http://192.168.137.117:888/JSON/getPost.php?topic="+$.page_post.topic+"&id="+this.id).then(function(JSON) {
+					$.unity.getJSON("JSON/getPost.php?topic="+$.page_post.topic+"&id="+this.id).then(function(JSON) {
 						$.page_topic.title=JSON.post;
 						$.page_topic.body=JSON.motd;
 						for(reply in JSON.reply) {							
@@ -247,6 +249,4 @@
 	</script>
 </body>
 </html>
-<link href="css/normalize.css" rel="stylesheet" type="text/css" defer async="async">
-<link href="fonts/font.css" rel="stylesheet" type="text/css" defer async="async">
-<link href="css/core.css" rel="stylesheet" type="text/css" defer async="async">
+<link href="css/??normalize.css,core.css,raleway.css,font-awesome.min.css" rel="stylesheet" type="text/css" defer async="async">

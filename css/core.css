@@ -2,7 +2,9 @@
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 html,body{
 	width: 90%;
-	padding-left:5%;}
+	padding-left:5%;
+	font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif , "微軟正黑體";
+	color: #222;}
 nav{
 	padding-left:10%;
 	padding-right:10%;
