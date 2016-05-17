@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+	<meta charset="utf-8">
+	<title>港人有云</title>
+	<meta name="description" content="HongKonger would like to say">
+	<meta name="author" content="j113203">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#777777">
+	<link href="favicon.ico" rel="icon" type="image/x-icon" defer async="async">
+	<meta property="og:image" content="favicon.ico" />
+</head>
+<body>
+
+	Loading...
+	
+	<script>
+	
+	
+		var cache = {
+		
+			get : function(n,e,o){
+				var s=new XMLHttpRequest;s.open("get",n,!0),s.onload=function(){200==s.status?e(s.response):o()},s.onerror=function(){o()},s.send()
+			},
+			
+			size : 5*1024*1024,
+			
+			root : null,
+			
+			
+			
+			init : function(match,notMatch){
+			
+				navigator.webkitPersistentStorage.requestQuota(this.size, function(){
+					
+					window.webkitRequestFileSystem(PERSISTENT, this.size, function(fs){
+					
+						cache.root=fs;
+						cache.get("version",function(data){
+							cache.file.reader("version",function(version){
+								if(data==version){
+									match(version);
+								}else{
+									notMatch(version);
+								}
+							});
+						});
+						
+					},function(){				
+						console.log("error 2");						
+					});
+					
+				},function(){			
+					console.log("error 1");				
+				});	
+				
+			},
+			
+			folder : function(name){
+			
+				this.root.root.getDirectory(name, {create: true}, function(dirEntry) {
+					return dirEntry;
+				});
+				
+			},
+			
+			file : {
+				file : function(name,success){
+					cache.root.root.getFile(name, {create: true}, function(fileEntry) {
+						success(fileEntry);
+					});
+				},
+				reader : function(name,success){
+					this.file(name,function(fileEntry) {
+						fileEntry.file(function(file) {
+							var reader = new FileReader();
+							reader.onloadend = function(e) {
+								success(this.result);
+							};
+							reader.readAsText(file);
+						});
+					});
+				},
+				writer : function(name,type){
+					this.file(name,function(fileEntry) {
+						fileEntry.createWriter(function(fileWriter){
+							cache.get(name,function(data){
+								fileWriter.write(new Blob([data], {"type": type}));
+							});
+						});
+					});
+				}
+			}
+					
+		};
+	
+		cache.init(function(){
+		
+			window.location = "filesystem:"+window.location.origin+"/persistent/index.html";
+			
+		},function(){
+		
+			cache.folder("css");
+			cache.file.writer("css/core.css","text/css");
+			
+			cache.folder("fonts");
+			cache.file.writer("fonts/FontAwesome.otf","font/opentype");
+			cache.file.writer("fonts/fontawesome-webfont.eot","application/vnd.ms-fontobject");
+			cache.file.writer("fonts/fontawesome-webfont.svg","image/svg+xml");
+			cache.file.writer("fonts/fontawesome-webfont.ttf","application/font-sfnt");
+			cache.file.writer("fonts/fontawesome-webfont.woff","application/x-font-woff");
+			cache.file.writer("fonts/fontawesome-webfont.woff2","application/font-woff2");
+			
+			cache.folder("images");
+			cache.file.writer("images/favicon-comment.ico","image/x-icon");
+			cache.file.writer("images/logo.png","image/png");
+			
+			cache.file.writer("index.html","text/html");
+			cache.file.writer("favicon.ico","image/x-icon");
+			
+			cache.file.writer("version","text/plain");	
+			window.location = "filesystem:"+window.location.origin+"/persistent/index.html";
+			
+		});
+		
+	</script>
+	
+</body>
+</html>

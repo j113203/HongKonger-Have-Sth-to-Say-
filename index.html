@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="theme-color" content="#777777">
 	<link href="favicon.ico" rel="icon" type="image/x-icon" defer async="async">
+	<meta property="og:image" content="favicon.ico" />
 </head>
 <body>
 	<nav>
@@ -16,237 +17,98 @@
 			<i class="inline fa fa-comment"></i>
 		</div>
 		<div class="inline">
-			<form method="get" class="search" onSubmit='return $.search(topic.value)'>
+			<form method="get" class="search">
 				<input class="borderless full-width" type="text" placeholder="討論話題 ……" name="topic" required><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
 			</form>
-		</div>
+		</div>			
 	</nav>
+	
 	<div class="container">
-		<div id="topic">
-			<h3 class="topic"></h3>
-			<p class="topic"></p>
-		</div>
-		<div id="page_post">
-			<table class="full-width">
-				<thead>
-					<tr>
-						<th class="title">標題</th>
-						<th class="score">評分</th>
-					</tr>
-				</thead>
-				<tbody class="body">
-				</tbody>
-			</table>
-		</div>
-		<div id="page_topic">
-			<div class="body">		
-			</div>
-		</div>
-		<div id="page_homepage">
-			This is the homepage
-		</div>
-	</div>
-	<div id="FnKey">	
-	</div>
-	<script>
-		
-	</script>
-	<script>
-		String.prototype.startsWith = function(searchString, position){position = position || 0;return this.substr(position, searchString.length) === searchString;};
-		/* Core
-		–––––––––––––––––––––––––––––––––––––––––––––––––– */
-		var $ = {
-			/* Unity
-			–––––––––––––––––––––––––––––––––––––––––––––––––– */
-			unity : {
-				getJSON : function(e){return new Promise(function(n,t){var o=new XMLHttpRequest;o.open("get",e,!0),o.responseType="json",o.onload=function(){var e=o.status;200==e?n(o.response):t(e)},o.onerror=function(){t()},o.send()})}
-			},
-			/* Handle the search
-			–––––––––––––––––––––––––––––––––––––––––––––––––– */
-			search : function(topic){
-				if (topic){					
-					$.page_post.topic=topic;				
-					$.page_post.refresh();
-					window.location.hash = "#"+topic;
-				}
-				return false;
-			},
-			/* Handle the topic enter
-			–––––––––––––––––––––––––––––––––––––––––––––––––– */
-			topic : function(id,topic){
-				$.page_topic.id=id;
-				$.page_topic.topic=topic;
-				$.page_topic.refresh();
-				return false;
-			},
-			/* Function Key
-			–––––––––––––––––––––––––––––––––––––––––––––––––– */
-			Fn : {
-				element : document.getElementById("FnKey"),
-				clear : function(){
-					this.element.innerHTML = "";
-					return this;
-				},
-				post : function(){
-					this.element.innerHTML +='<a class="button" onclick=""><i class="fa fa-plus fa-1x"></i> 話題</a>';
-					return this;
-				},
-				pevious : function(){
-					this.element.innerHTML +='<a class="button" onclick="$.clear(\'page_post\').Fn()"><i class="fa fa-chevron-circle-left fa-1x"></i> 返回</a>';
-					return this;
-				},
-				refresh : function(){
-					this.element.innerHTML +='<a class="button" onclick="$me.page.refresh()"><i class="fa fa-refresh fa-1x"></i> 刷新</a>';
-					return this;
-				}
-			},
-			/* Handle the ui switch
-			–––––––––––––––––––––––––––––––––––––––––––––––––– */
-			clear : function(page){
-				$me.page=$[page];
-				page_=document.getElementsByTagName('div');
-				for (page__ in page_){
-					page__=page_[page__];
-					if (page__.id && page__.id.startsWith("page_")){
-						if (page__.id==page){
-							page__.style.display = "block";
-						}else{
-							page__.style.display = "none";
-						}
-					}
-				}
-				return $me.page;
-			},
-			/* Handle the title
-			–––––––––––––––––––––––––––––––––––––––––––––––––– */
-			title: {
-				name : "topic",
-				element : {
-					title : function(){
-						return document.querySelector("#"+$.title.name);
-					},
-					head : function(){
-						return document.querySelector("#"+$.title.name+" h3.topic");
-					},
-					body : function(){
-						return document.querySelector("#"+$.title.name+" p.topic");
-					},
-				},
-				show : function(){
-					this.element.title().style.display = "block";
-					return this;
-				},
-				hide : function(){
-					this.element.title().style.display = "none";
-					return this;
-				},
-				head : function(e){				
-					this.element.head().innerHTML=e;
-					return this;
-				},
-				body : function(e){
-					this.element.body().innerHTML=e;
-					return this;
-				}
-			},
-			/* Handle the page_post
-			–––––––––––––––––––––––––––––––––––––––––––––––––– */
-			page_post : {
-				title : "",
-				body : "",
-				name : "page_post",
-				topic : "",
-				element : function(){
-					return document.querySelector("#"+this.name+" .body");
-				},
-				refresh : function(){
-					$.clear();
-					$.Fn.clear();
-					this.element().innerHTML="";
-					$.title.head(this.topic).body("話題載入中 ……").show();
-					$.unity.getJSON("JSON/getPosts.php?topic="+this.topic).then(function(JSON) {
-						$.page_post.title=JSON.topic;
-						$.page_post.body=JSON.motd;
-						for(posts in JSON.posts) {
-							posts = JSON.posts[posts];
-							$.page_post.post(posts.id,posts.title,posts.score);
-						}
-						$.clear("page_post");
-						$.page_post.Fn();
-					},function(){
-						$.title.body("話題載入失敗。");
-						$me.page=$.page_post;
-						$.Fn.clear().refresh();
-					});
-					return this;
-				},
-				Fn: function(){
-					$.title.head(this.title).body(this.body).show();
-					$.Fn.clear().post().refresh();
-					return this;
-				},
-				post: function(tid,title,score){
-					this.element().innerHTML+='<tr><td onclick="$.topic(\''+tid+'\',\''+title+'\')">'+title+'</td><td>'+score+'</td></tr>';
-					return this;
-				}
-			},
-			/* Handle the page_topic
-			–––––––––––––––––––––––––––––––––––––––––––––––––– */
-			page_topic : {
-				title : "",
-				body : "",
-				name : "page_topic",
-				id : "",
-				topic : "",
-				element : function(){
-					return document.querySelector("#"+this.name+" .body");
-				},
-				refresh : function(){
-					$.clear();
-					$.Fn.clear();
-					this.element().innerHTML="";
-					$.title.head(this.topic).body("討論載入中 ……").show();
-					$.unity.getJSON("JSON/getPost.php?topic="+$.page_post.topic+"&id="+this.id).then(function(JSON) {
-						$.page_topic.title=JSON.post;
-						$.page_topic.body=JSON.motd;
-						for(reply in JSON.reply) {							
-							reply = JSON.reply[reply];
-							$.page_topic.post(reply.user,reply.text,parseInt(reply.date));
-						}
-						$.clear("page_topic");
-						$.page_topic.Fn();
-					},function(){
-						$.title.body("討論載入失敗。");
-						$me.page=$.page_topic;
-						$.Fn.clear().refresh();
-					});
-					return this;					
-				},
-				Fn: function(){
-					$.title.head(this.title).body(this.body).show();
-					$.Fn.clear().pevious().refresh();
-					return this;
-				},
-				post: function(user,text,date){
-					this.element().innerHTML+='<div class="chat'+(user==$me.name?" me":"")+'"><a class="user">'+user+'</a><div class="bubble">'+text+'</div><a class="date">'+this.simplify(date)+"</a></div>";
-					return this;
-				},
-				simplify: function(e){
-					var t=new Date;return e=new Date(e),e.toISOString().substr(0,10)==t.toISOString().substr(0,10)?e.getHours()==t.getHours()?e.getMinutes()==t.getMinutes()?t.getSeconds()-e.getSeconds()+"秒前":t.getMinutes()-e.getMinutes()+"分鐘前":t.getHours()-e.getHours()+"小時前":e.getFullYear()==t.getFullYear()?e.getMonth()==t.getMonth()?t.getDate()-e.getDate()+"日前":t.getMonth()-e.getMonth()+"個月前":t.getFullYear()-e.getFullYear()+"年前";
-					return this;
-				}
-			}
-		};		
-		/* Setting
-		–––––––––––––––––––––––––––––––––––––––––––––––––– */
-		var $me = {
-			name : "j113203",
-			page : ""
-		};
-		(function(){
-			$.search(window.location.hash.slice(1));
-		})();
-	</script>
+	</div>	
+	
 </body>
 </html>
-<link href="css/??normalize.css,core.css,raleway.css,font-awesome.min.css" rel="stylesheet" type="text/css" defer async="async">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css" rel="stylesheet" type="text/css" defer async>
+<link href="../css/core.css" rel="stylesheet" type="text/css" defer async>
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" defer async>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" defer async>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" type="text/javascript" defer async></script>
+<script defer async>
+(function(){
+	window.addEventListener("load",function(){	
+		window.onerror = function(message, source, lineno, colno, error) {
+			alert(message);
+			HK.container.element.html(HK.title.show("500 Internal Server Error",message));
+		};
+		(function(proxied) {
+			window.alert = function(msg) {
+				HK.container.element.prepend(HK.title.show("",msg));
+				$("div#title").fadeOut(3000);
+			};
+		})(window.alert);		
+		window.HK = {
+			TEMPpool : new Object,
+			container : {
+				element : $("div.container"),
+				html : "",
+				script : function(){},
+				callback : function(html,script){
+					this.html=html;
+					this.script=script;
+				}
+			},
+			require : function(page){
+				HK.TEMPpool= new Object;
+				HK.container.element.html(HK.title.show("模組: "+page,"載入中 ……"));
+				$.ajaxSetup({ cache: true });
+				$.getScript( "module/"+page+".js" , function(){
+					HK.container.element.html(HK.container.html);
+					HK.container.script();
+				}).fail(function(){
+					HK.container.element.html(HK.title.show("模組: "+page,"載入失敗。"));
+				});
+			},
+			title : {
+				h1_ : "",
+				h2_ : "",
+				show : function(h1,h2){
+					this.h1_ = h1;
+					this.h2_ = h2;
+					return this.show_(h1,h2);
+				},
+				show_ : function(h1,h2){
+					return "<div id='title'><h3 class='title'>"+h1+"</h3><p class='title'>"+h2+"</p></div>";
+				},
+				h1 : function(h1){
+					this.h1_ = h1;
+					return this.show_(h1,this.h2_);
+				},
+				h2 : function(h2){
+					this.h2_ = h2;
+					return this.show_(this.h1_,h2);
+				}
+			},
+			Fn : {
+				Fn_ : '<div id="FnKey">',
+				Fn : function(onclick,icon,text){
+					return '<a class="button" onclick="'+onclick+'"><i class="fa fa-'+icon+' fa-1x"></i> '+text+'</a>';
+				}
+			},
+			search : function(topic){		
+				topic = escape(unescape(topic));
+				$me.topic=topic;
+				HK.require("topic");
+				return false;
+			},
+			post : function(post){
+				$me.post=post;
+				HK.require("post");
+			}
+		};
+		HK.require("shield");
+	});
+})();
+
+
+
+</script>

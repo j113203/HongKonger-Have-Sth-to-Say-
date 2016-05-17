@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+	<meta charset="utf-8">
+	<title>港人有云</title>
+	<meta name="description" content="HongKonger would like to say">
+	<meta name="author" content="j113203">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#777777">
+	<link href="favicon.ico" rel="icon" type="image/x-icon" defer async="async">
+	<meta property="og:image" content="favicon.ico" />
+</head>
+<body>
+	<nav>
+		<div class="inline logo">
+			港人有<u>云</u>
+			<i class="inline fa fa-comment"></i>
+		</div>
+		<div class="inline">
+			<form method="get" class="search" onSubmit='return HK.search(topic.value)'>
+				<input class="borderless full-width" type="text" placeholder="討論話題 ……" name="topic" required><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
+			</form>
+		</div>
+		
+	</nav>
+	
+	<div class="container">
+		<div class="login">
+			<div class="form inline-block">				
+				<label>電子郵件地址</label>				
+				<input class="full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput">				
+				<br><br>				
+				<label>密碼</label>				
+				<input class="full-width" type="email" placeholder="******" id="exampleEmailInput">				
+				<br><br>				
+				<button class="full-width">登入</button>
+			</div>
+		</div>
+	</div>	
+	
+</body>
+</html>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css" rel="stylesheet" type="text/css" defer async>
+<link href="../css/core.css" rel="stylesheet" type="text/css" defer async>
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" defer async>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" defer async>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" type="text/javascript" defer async></script>
+<script>
+	window.addEventListener("load",function(){
+		$("div.inline > form").hide();
+		
+	});
+</script>

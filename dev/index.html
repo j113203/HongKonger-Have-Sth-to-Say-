@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+	<meta charset="utf-8">
+	<title>港人有云</title>
+	<meta name="description" content="HongKonger would like to say">
+	<meta name="author" content="j113203">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#777777">
+	<link href="favicon.ico" rel="icon" type="image/x-icon" defer async="async">
+	<meta property="og:image" content="favicon.ico" />
+</head>
+<body>
+	<nav>
+		<div class="inline logo">
+			港人有<u>云</u>
+			<i class="inline fa fa-comment"></i>
+		</div>
+		<div class="inline">
+			<form method="get" class="search" onSubmit='return $.search(topic.value)'>
+				<input class="borderless full-width" type="text" placeholder="討論話題 ……" name="topic" required><button class="borderless" type="submit"><i class="fa fa-commenting-o"></i></button>
+			</form>
+		</div>
+	</nav>
+	<div class="container">
+		<div id="topic">
+			<h3 class="topic"></h3>
+			<p class="topic"></p>
+		</div>
+		<div id="page_post">
+			<table class="full-width">
+				<thead>
+					<tr>
+						<th class="title">標題</th>
+						<th class="score">評分</th>
+					</tr>
+				</thead>
+				<tbody class="body">
+				</tbody>
+			</table>
+		</div>
+		<div id="page_topic">
+			<div class="body">		
+			</div>
+		</div>
+		<div id="page_homepage">
+			This is the homepage
+		</div>
+	</div>
+	<div id="FnKey">	
+	</div>
+	<script>
+		
+	</script>
+	<script>
+		String.prototype.startsWith = function(searchString, position){position = position || 0;return this.substr(position, searchString.length) === searchString;};
+		/* Core
+		–––––––––––––––––––––––––––––––––––––––––––––––––– */
+		(function(){
+			var $ = {
+				/* Setting
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				setting : {
+					page : ""
+				},
+				/* Unity
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				unity : {
+					get : function(n,e,o){var s=new XMLHttpRequest;s.open("get",n,!0),s.onload=function(){200==s.status?e(s.response):o()},s.onerror=function(){o()},s.send()}
+				},
+				/* Handle the search
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				search : function(topic){
+					if (topic){					
+						$.page_post.topic=topic;				
+						$.page_post.refresh();
+						history.pushState({}, topic, topic);
+					}
+					return false;
+				},
+				/* Handle the topic enter
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				topic : function(id,topic){
+					$.page_topic.id=id;
+					$.page_topic.topic=topic;
+					$.page_topic.refresh();
+					history.pushState({}, "", $.page_post.topic+"/"+topic);
+					
+					return false;
+				},
+				/* Function Key
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				Fn : {
+					element : document.getElementById("FnKey"),
+					clear : function(){
+						this.element.innerHTML = "";
+						return this;
+					},
+					Fn : function(onclick,icon,text){
+						return '<a class="button" onclick="'+onclick+'"><i class="fa fa-'+icon+' fa-1x"></i> '+text+'</a>';
+					},
+					post : function(){
+						this.element.innerHTML += this.Fn("","plus","話題");
+						return this;
+					},
+					pevious : function(){
+						this.element.innerHTML += this.Fn("$.clear(\'page_post\').Fn()","chevron-circle-left","返回");
+						return this;
+					},
+					refresh : function(){
+						this.element.innerHTML += this.Fn("$.setting.page.refresh()","refresh","刷新");
+						return this;
+					}
+				},
+				/* Handle the ui switch
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				clear : function(page){
+					$.setting.page =$[page];
+					page_=document.getElementsByTagName('div');
+					for (page__ in page_){
+						page__=page_[page__];
+						if (page__.id && page__.id.startsWith("page_")){
+							if (page__.id==page){
+								page__.style.display = "block";
+							}else{
+								page__.style.display = "none";
+							}
+						}
+					}
+					return $.setting.page;
+				},
+				/* Handle the title
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				title: {
+					name : "topic",
+					element : {
+						title : function(){
+							return document.querySelector("#"+$.title.name);
+						},
+						head : function(){
+							return document.querySelector("#"+$.title.name+" h3.topic");
+						},
+						body : function(){
+							return document.querySelector("#"+$.title.name+" p.topic");
+						},
+					},
+					show : function(){
+						this.element.title().style.display = "block";
+						return this;
+					},
+					hide : function(){
+						this.element.title().style.display = "none";
+						return this;
+					},
+					head : function(e){				
+						this.element.head().innerHTML=e;
+						return this;
+					},
+					body : function(e){
+						this.element.body().innerHTML=e;
+						return this;
+					}
+				},
+				/* Handle the page_post
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				page_post : {
+					title : "",
+					body : "",
+					name : "page_post",
+					topic : "",
+					element : function(){
+						return document.querySelector("#"+this.name+" .body");
+					},
+					refresh : function(){
+						$.clear();
+						$.Fn.clear();
+						this.element().innerHTML="";
+						$.title.head(this.topic).body("話題載入中 ……").show();
+						$.unity.get("JSON/getPosts.php?topic="+this.topic,function(data) {
+							data = JSON.parse(data);
+							$.page_post.title=data.topic;
+							$.page_post.body=data.motd;
+							for(posts in data.posts) {
+								posts = data.posts[posts];
+								$.page_post.post(posts.id,posts.title,posts.score);
+							}
+							$.clear("page_post");
+							$.page_post.Fn();
+						},function(){
+							$.title.body("話題載入失敗。");
+							$.setting.page=$.page_post;
+							$.Fn.clear().refresh();
+						});
+						return this;
+					},
+					Fn: function(){
+						$.title.head(this.title).body(this.body).show();
+						$.Fn.clear().post().refresh();
+						return this;
+					},
+					post: function(tid,title,score){
+						this.element().innerHTML+='<tr><td onclick="$.topic(\''+tid+'\',\''+title+'\')">'+title+'</td><td>'+score+'</td></tr>';
+						return this;
+					}
+				},
+				/* Handle the page_topic
+				–––––––––––––––––––––––––––––––––––––––––––––––––– */
+				page_topic : {
+					title : "",
+					body : "",
+					name : "page_topic",
+					id : "",
+					topic : "",
+					element : function(){
+						return document.querySelector("#"+this.name+" .body");
+					},
+					refresh : function(){
+						$.clear();
+						$.Fn.clear();
+						this.element().innerHTML="";
+						$.title.head(this.topic).body("討論載入中 ……").show();
+						$.unity.get("JSON/getPost.php?topic="+$.page_post.topic+"&id="+this.id,function(data) {
+							data = JSON.parse(data);
+							$.page_topic.title=data.post;
+							$.page_topic.body=data.motd;
+							for(reply in data.reply) {							
+								reply = data.reply[reply];
+								$.page_topic.post(reply.user,reply.text,parseInt(reply.date));
+							}
+							$.clear("page_topic");
+							$.page_topic.Fn();
+						},function(){
+							$.title.body("討論載入失敗。");
+							$.setting.page=$.page_topic;
+							$.Fn.clear().refresh();
+						});
+						return this;					
+					},
+					Fn: function(){
+						$.title.head(this.title).body(this.body).show();
+						$.Fn.clear().pevious().refresh();
+						return this;
+					},
+					post: function(user,text,date){
+						this.element().innerHTML+='<div class="chat'+(user==$me.name?" me":"")+'"><a class="user">'+user+'</a><div class="bubble">'+text+'</div><a class="date">'+this.simplify(date)+"</a></div>";
+						return this;
+					},
+					simplify: function(e){
+						var t=new Date;return e=new Date(e),e.toISOString().substr(0,10)==t.toISOString().substr(0,10)?e.getHours()==t.getHours()?e.getMinutes()==t.getMinutes()?t.getSeconds()-e.getSeconds()+"秒前":t.getMinutes()-e.getMinutes()+"分鐘前":t.getHours()-e.getHours()+"小時前":e.getFullYear()==t.getFullYear()?e.getMonth()==t.getMonth()?t.getDate()-e.getDate()+"日前":t.getMonth()-e.getMonth()+"個月前":t.getFullYear()-e.getFullYear()+"年前";
+						return this;
+					}
+				}
+			};
+			/* Setting
+			–––––––––––––––––––––––––––––––––––––––––––––––––– */
+			var $me = {
+				name : "j113203",
+			};		
+			
+			$.search(window.location.hash.slice(1) || window.location.search.slice(7));
+			
+			window.addEventListener("popstate", function(){
+				console.log(event);
+			});
+			
+			window.$ = $;	
+		})();
+		
+	</script>
+</body>
+</html>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css" rel="stylesheet" type="text/css" defer async="async">
+<link href="css/core.css" rel="stylesheet" type="text/css" defer async="async">
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" defer async="async">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" defer async="async">
