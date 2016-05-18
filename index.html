@@ -37,15 +37,15 @@
 (function(){
 	window.addEventListener("load",function(){	
 		window.onerror = function(message, source, lineno, colno, error) {
-			alert(message);
 			HK.container.element.html(HK.title.show("500 Internal Server Error",message));
+			return true;
 		};
-		(function(proxied) {
+		(function() {
 			window.alert = function(msg) {
 				HK.container.element.prepend(HK.title.show("",msg));
 				$("div#title").fadeOut(3000);
 			};
-		})(window.alert);		
+		})(window.alert);
 		window.HK = {
 			TEMPpool : new Object,
 			container : {
@@ -62,8 +62,10 @@
 				HK.container.element.html(HK.title.show("模組: "+page,"載入中 ……"));
 				$.ajaxSetup({ cache: true });
 				$.getScript( "module/"+page+".js" , function(){
+					
 					HK.container.element.html(HK.container.html);
 					HK.container.script();
+					HK.container.script=function(){};
 				}).fail(function(){
 					HK.container.element.html(HK.title.show("模組: "+page,"載入失敗。"));
 				});
@@ -106,6 +108,7 @@
 			}
 		};
 		HK.require("shield");
+		
 	});
 })();
 
