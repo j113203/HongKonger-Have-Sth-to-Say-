@@ -3,7 +3,9 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		var oauth = $me.oauth;
 		Object.defineProperty(window.$me, "oauth", { 
 			get: function () {
-				if (arguments.callee.caller){
+				var UUID_ = UUID(arguments);
+				console.log("oauth: "+UUID_);
+				if (UUID_ == "z:348"){
 					return oauth;
 				}else{
 					shield("用家嘗試直接存取帳戶登入資料");
@@ -16,7 +18,9 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		var name = $me.name;
 		Object.defineProperty(window.$me, "name", { 
 			get: function () {
-				if (arguments.callee.caller){
+				var UUID_ = UUID(arguments);
+				console.log("name: "+UUID_);
+				if (UUID_ == "z:348"){
 					return name;
 				}else{
 					shield("用家嘗試直接存取帳戶登入資料");
@@ -30,9 +34,10 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		HK.require("index");
 	}else{
 		
-		(function(x) {
+		(function(x) {			
 			window.HK.require = function() {
-				if (arguments.callee.caller){
+				var UUID_ = UUID(arguments);
+				if (UUID_ == "z:348" || UUID_ == "debug:onclick:49" || UUID_ == "112" || UUID_ == "onclick:43" || UUID_ == "onclick:50" || UUID_ == "onclick:47" ){
 					x.apply(this, arguments);
 				}else{
 					shield("用家嘗試直接存取保護模組");
@@ -41,8 +46,9 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		})(window.HK.require);
 		
 		(function(x) {
-			window.HK.search = function() {
-				if (arguments.callee.caller){
+			window.HK.search = function() {				
+				var UUID_ = UUID(arguments);
+				if (UUID_ == "112" || UUID_ == "onclick:50"){
 					return x.apply(this, arguments);
 				}else{
 					shield("用家嘗試直接存取保護模組");
@@ -52,7 +58,8 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		
 		(function(x) {
 			window.HK.post = function() {
-				if (arguments.callee.caller){
+				var UUID_ = UUID(arguments);
+				if (UUID_ == "onclick:43" || UUID_ == "onclick:47"){
 					x.apply(this, arguments);
 				}else{
 					shield("用家嘗試直接存取保護模組");
@@ -101,4 +108,16 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		window.HK = undefined;
 		console.warn("我們已阻止以下行為: "+reason);
 	}
+	function UUID(a){		
+		var name = "";
+		while(a.callee.caller){
+			a = a.callee.caller.arguments;
+			if (a.callee.name){
+				name+=a.callee.name+":";
+			}		
+		}	
+		window.A = a;
+		return name+a.callee.toString().length;
+	}
+	
 });

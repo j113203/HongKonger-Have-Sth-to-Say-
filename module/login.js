@@ -1,4 +1,4 @@
-HK.container.callback('<form class="login"><div class="form inline-block">'+HK.title.show("","")+'<br><label>電子郵件地址</label><input class="full-width" type="email" placeholder="test@mailbox.com" id="loginid"><br><br><label>密碼</label><input class="full-width" type="password" placeholder="******" id="loginpd"><br><br><button class="full-width" type="submit">登入</button><br><br><a onclick="HK.TEMPpool.debug()" class="full-width">Debug</a></div></form>',function(){
+HK.container.callback('<form class="login"><div class="form inline-block">'+HK.title.show("","")+'<br><label>電子郵件地址</label><input class="full-width" type="email" placeholder="test@mailbox.com" id="loginid" required><br><br><label>密碼</label><input class="full-width" type="password" placeholder="******" id="loginpd" required><br><br><button class="full-width" type="submit">登入</button><br><br><a onclick="HK.TEMPpool.debug()" class="full-width">Debug</a></div></form>',function(){
 	var fail = 5;
 	$("form.login").submit(function(){
 		loginpd.value = calcMD5(loginid.value+calcMD5(loginid.value+loginpd.value));
