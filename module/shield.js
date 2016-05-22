@@ -36,8 +36,9 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		HK.require("index");
 	}else{
 		
-		console.clear();
-		
+		if (console.clear){
+			console.clear();
+		}				
 		console.info("%c港人有%c云%c\n\n","width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體'","width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體';border-bottom: 1px dotted #000;text-decoration: none;","");
 		console.group("把文字貼在這裏，不會因此 ……");
 		console.warn("擁有管理權限");
@@ -52,10 +53,35 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		console.warn("帳號凍結");		
 		console.groupEnd();
 		
+		var console_ = ["\n\n"];
+		for (var ii = 1; ii <= 50; ii++) {
+			console_[0]+= "%c██";
+			var a = "color:black;text-shadow:";			
+			for (var i = 1; i <= getlength(ii); i++) {
+				a+="0 "+i+"em 0 black";
+				if (i==getlength(ii)){
+					a+=";"
+				}else{
+					a+=","
+				}
+			}
+			console_.push(a);
+		}
+		function getlength(i){
+			if (i<4){
+				return 22;
+			}else if (30-i<22){
+				return 22;
+			}else{
+				return 30-i;
+			}
+		}		
+		console.log.apply(console,console_);
+		
 		(function(x) {			
 			window.HK.require = function() {
 				//console.log("require");
-				if (UUID(UUID_+"#########2z689##$",UUID_+"###1###2z689##$",UUID_+"##debug#onclick#$",UUID_+"###1#####1#1$",UUID_+"###1##onclick#$",UUID_+"#####1#1$",
+				if (UUID(UUID_+"#########2z689##$",UUID_+"###1###2z689##$",UUID_+"###1#####1#1$",UUID_+"###1##onclick#$",UUID_+"#####1#1$",
 						UUID_+"########fireWith81z689##$",UUID_+"###1##fireWith81z689##$",UUID_+"####dispatch671#1$",UUID_+"##search95####dispatch671#1$",UUID_+"##search95##onclick#$",UUID_+"##post49##onclick#$")){
 					x.apply(this, arguments);
 				}else{
@@ -105,7 +131,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		});
 		
 		if (typeof(Storage) !== "undefined") {
-			if (localStorage.getItem("login") && (parseInt(localStorage.getItem("login")) - Date.now()) > 1800000 ){
+			if (localStorage.getItem("login") && (parseInt(atob(localStorage.getItem("login"))) - Date.now()) > 1800000 ){
 				localStorage.removeItem("login");
 			}
 			Storage.prototype.removeItem = function(){				
@@ -123,7 +149,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		}
 		
 		window.$me = {			
-			name : "07", 
+			name : "", 
 			oauth : "",
 			topic : "",
 			post : ""

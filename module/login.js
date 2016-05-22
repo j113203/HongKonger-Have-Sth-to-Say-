@@ -1,37 +1,56 @@
-HK.container.callback('<form class="login"><div class="form inline-block">'+HK.title.show("","")+'<br><label>電子郵件地址</label><input class="full-width" type="email" placeholder="test@mailbox.com" id="loginid" required><br><br><label>密碼</label><input class="full-width" type="password" placeholder="******" id="loginpd" required><br><br><button class="full-width" type="submit">登入</button><br><br><a onclick="HK.TEMPpool.debug()" class="full-width">Debug</a></div></form>',function(){
+HK.container.callback('<form class="login"><div class="form inline-block">'+HK.title.show("","")+'<br><label>電子郵件地址</label><input class="full-width" type="email" placeholder="test@mailbox.com" id="loginid" required><br><br><label>密碼</label><input class="full-width" type="password" placeholder="******" id="loginpd" required><br><br><button class="full-width" type="submit">登入</button><br><br><a onclick="HK.TEMPpool.debug()" class="full-width">開發者帳號</a></div></form>',function(){
 	var fail = 5;
 	$("form.login").submit(function(){
+		$(".title:eq(1)").html("登入中 ……");
 		loginpd.value = calcMD5(loginid.value+calcMD5(loginid.value+loginpd.value));
 		if (fail<=0){
 			loginpd.value="";
-			$(".title:eq(1)").html("登入次數失敗過多。");
+			$(".title:eq(1)").html("登入次數失敗過多,請等候 30分鐘。");
 		}else{
 			$.ajaxSetup({ cache: false });		
-			$.get( "JSON/login.php?id="+loginid.value+"&pd="+loginpd.value , function(data){
+			$.post( "JSON/login.php?_="+Date.now() , {"id":  btoa(loginid.value) , "pd": btoa(loginpd.value)},function(data){				
 				if(data.length!=256){
 					onError();
 				}else{
-					if (typeof(Storage) !== "undefined") {
-						localStorage.setItem("loginid", loginid.value );
-					}
-					$me.oauth=data;
-					$me.name=loginid.value;
-					HK.require("shield");
+					$.ajaxSetup({ cache: false });
+					$.post( "JSON/oauth.php?_="+Date.now() , {"id": btoa(loginid.value) , "token": btoa(data)},function(oauth){
+						if (loginid.value==atob(oauth)){
+							if (typeof(Storage) !== "undefined") {
+								localStorage.setItem("loginid", btoa(loginid.value) );
+								localStorage.setItem("loginfail", btoa(5) );
+							}
+							$me.oauth=data;
+							$me.name=loginid.value;
+							HK.require("shield");
+						}else{
+							onError();
+						}
+					}).fail(onError);
 				}
 			}).fail(onError);
 		}
 		fail--;
 		return false;
 	});
-	if (typeof(Storage) !== "undefined") {		
-		loginid.value=localStorage.getItem("loginid");
+	if (typeof(Storage) !== "undefined") {	
+		if (localStorage.getItem("loginid")){
+			try{
+				loginid.value=atob(localStorage.getItem("loginid"));
+			}catch(ex){
+			}
+		}		
 		if (localStorage.getItem("login")){
 			fail = 0;		
+		}else if(localStorage.getItem("loginfail")){
+			fail = atob(localStorage.getItem("loginfail"));		
 		};
 	}
 	function onError(){
-		if (fail<=0 && typeof(Storage) !== "undefined"){
-			localStorage.setItem("login", Date.now());
+		if (typeof(Storage) !== "undefined"){
+			if (fail<=0){
+				localStorage.setItem("login", btoa(Date.now()));
+			}
+			localStorage.setItem("loginfail", btoa(fail));
 		}
 		loginpd.value="";
 		$(".title:eq(1)").html("帳號或密碼錯誤");		
@@ -40,9 +59,11 @@ HK.container.callback('<form class="login"><div class="form inline-block">'+HK.t
 });
 (function(){
 	function debug(){
-		$me.oauth="keywafdfdsgs8895";
-		$me.name="07";		
-		HK.require("shield");		
+		loginid.value="demo@j113203.me";
+		loginpd.value=" ";
+		//$me.oauth="keywafdfdsgs8895";
+		//$me.name="07";		
+		//HK.require("shield");		
 	}
 	HK.TEMPpool.debug=debug;
 })();

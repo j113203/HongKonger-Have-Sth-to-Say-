@@ -1,11 +1,11 @@
 <?php
 $id=htmlspecialchars(base64_decode($_POST["id"]));
-$password=htmlspecialchars(base64_decode($_POST["pd"]));
+$token=htmlspecialchars(base64_decode($_POST["token"]));
 $cache=htmlspecialchars($_GET["_"]);
 if (empty($cache)){
 	echo "ip has been temporarily suspended";
-}else{
+}else{	
 	include 'lib/oauth.php';
-	echo oauth_login($id,$password,$cache);
+	echo base64_encode(oauth_verify($id,$token,$cache));
 }
 ?>

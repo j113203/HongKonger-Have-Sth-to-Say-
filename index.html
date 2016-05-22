@@ -38,7 +38,7 @@
 	window.addEventListener("load",function(){	
 		window.onerror = function(message, source, lineno, colno, error) {
 			HK.container.element.html(HK.title.show("500 Internal Server Error",message));
-			//return true;
+			return true;
 		};
 		(function() {
 			window.alert = function(msg) {
