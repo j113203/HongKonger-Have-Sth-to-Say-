@@ -5,7 +5,8 @@ $cache=htmlspecialchars($_GET["_"]);
 if (empty($cache)){
 	echo "ip has been temporarily suspended";
 }else{	
-	include 'lib/oauth.php';
+	include 'lib/config.php';
+	include 'lib/oauth.php';	
 	echo base64_encode(oauth_verify($id,$token,$cache));
 }
 ?>

@@ -8,12 +8,12 @@ HK.container.callback('<form class="login"><div class="form inline-block">'+HK.t
 			$(".title:eq(1)").html("登入次數失敗過多,請等候 30分鐘。");
 		}else{
 			$.ajaxSetup({ cache: false });		
-			$.post( "//rest.j113203.me/JSON/login.php?_="+Date.now() , {"id":  btoa(loginid.value) , "pd": btoa(loginpd.value)},function(data){				
+			$.post( "https://rest.j113203.me/JSON/login.php?_="+Date.now() , {"id":  btoa(loginid.value) , "pd": btoa(loginpd.value)},function(data){				
 				if(data.length!=256){
 					onError();
 				}else{
 					$.ajaxSetup({ cache: false });
-					$.post( "//rest.j113203.me/JSON/oauth.php?_="+Date.now() , {"id": btoa(loginid.value) , "token": btoa(data)},function(oauth){
+					$.post( "https://rest.j113203.me/JSON/oauth.php?_="+Date.now() , {"id": btoa(loginid.value) , "token": btoa(data)},function(oauth){
 						if (loginid.value==atob(oauth)){
 							if (typeof(Storage) !== "undefined") {
 								localStorage.setItem("loginid", btoa(loginid.value) );

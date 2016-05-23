@@ -76,7 +76,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 				return 30-i;
 			}
 		}		
-		//console.log.apply(console,console_);
+		console.log.apply(console,console_);
 		
 		(function(x) {			
 			window.HK.require = function() {
@@ -115,7 +115,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		
 		(function(x) {
 			window.XMLHttpRequest.prototype.open = function() {
-				if ( arguments[1].match("^(module\/.*\.js|http:\/\/rest.j113203.me\/JSON\/.*\.php.*)$") ){
+				if ( arguments[1].match("^(module\/.*\.js|https:\/\/rest.j113203.me\/JSON\/.*\.php.*)$") ){
 					x.apply(this, arguments);
 				}else{
 					shield("插件嘗試存取未授權的資源");
