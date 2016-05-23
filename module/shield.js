@@ -161,7 +161,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		}		
 		console.log.apply(console,console_);
 		
-		console.info("  %c港人有%c云%c\n\n","color:white;width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體'","color:white;width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體';border-bottom: 1px dotted #000;text-decoration: none;","");
+		console.info("  %c港人有%c云%c\n\n","color:white;width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體'","color:white;width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體';border-bottom: 1px dotted white;text-decoration: none;","");
 		console.log("  %c把文字貼在這裏，不會因此 ……","color:white");
 		console.group();
 		console.warn("  %c擁有管理權限","color:white");
