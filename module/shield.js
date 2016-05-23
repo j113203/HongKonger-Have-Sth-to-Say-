@@ -36,6 +36,48 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		HK.require("index");
 	}else{
 		
+		if (console.clear){
+			console.clear();
+		}				
+		console.info("%c港人有%c云%c\n\n","width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體'","width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體';border-bottom: 1px dotted #000;text-decoration: none;","");
+		console.group("把文字貼在這裏，不會因此 ……");
+		console.warn("擁有管理權限");
+		console.warn("獲得額外的功能");
+		console.warn("速度得到優化");
+		console.warn("重設登入次數");	
+		console.groupEnd();
+		
+		console.group("繼續要貼上的話，您 需承擔以下的可能性。");
+		console.warn("密碼外洩");
+		console.warn("對話外洩");
+		console.warn("帳號凍結");		
+		console.groupEnd();
+		
+		var console_ = ["\n\n"];
+		for (var ii = 1; ii <= 50; ii++) {
+			console_[0]+= "%c██";
+			var a = "color:black;text-shadow:";			
+			for (var i = 1; i <= getlength(ii); i++) {
+				a+="0 "+i+"em 0 black";
+				if (i==getlength(ii)){
+					a+=";"
+				}else{
+					a+=","
+				}
+			}
+			console_.push(a);
+		}
+		function getlength(i){
+			if (i<4){
+				return 22;
+			}else if (30-i<22){
+				return 22;
+			}else{
+				return 30-i;
+			}
+		}		
+		//console.log.apply(console,console_);
+		
 		(function(x) {			
 			window.HK.require = function() {
 				//console.log("require");
@@ -72,8 +114,8 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		})(window.HK.post);		
 		
 		(function(x) {
-			window.XMLHttpRequest.prototype.open = function() {				
-				if ( arguments[1].match("^(module\/.*\.js|JSON\/.*\.php.*)$") ){
+			window.XMLHttpRequest.prototype.open = function() {
+				if ( arguments[1].match("^(module\/.*\.js|http:\/\/rest.j113203.me\/JSON\/.*\.php.*)$") ){
 					x.apply(this, arguments);
 				}else{
 					shield("插件嘗試存取未授權的資源");
@@ -81,25 +123,28 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 			};
 		})(window.XMLHttpRequest.prototype.open);
 		
-		$(document).on("DOMNodeInserted",function(e){
-			var list = ["div","form","table","p"];
-			if (list.indexOf(e.target.nodeName.toLowerCase())<0){
-				shield("插件嘗試建立未授權的物件");
-			}
-		});
-		
 		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-		var list = ["div","form","table","p"];		
-		var NodeCheck = function(e){
-			if (list.indexOf(e.target.nodeName.toLowerCase())<0){
-				shield("插件嘗試建立未授權的物件");
-			}
-		};
+		var list = ["h3","p","div","thead","tbody","a"];		
 		
 		if (MutationObserver){
-			(new MutationObserver(function(ee){ee.forEach(NodeCheck);})).observe(document, {attributes: true,childList: true, characterData: true,  subtree: true});
+			(new MutationObserver(function(ee){	
+					ee.forEach(function(e){
+						for (var i = 0; i < e.addedNodes.length; i++){
+							for (var ii = 0; ii < e.addedNodes[i].childNodes.length; ii++){
+								if (list.indexOf(e.addedNodes[i].childNodes[ii].nodeName.toLowerCase())<0){									
+									shield("插件嘗試建立未授權的物件");
+								}
+							}							
+						}
+					});
+				}
+			)).observe(document, {childList: true,subtree: true});
 		}else{
-			$(document).on("DOMNodeInserted",NodeCheck);
+			$(document).on("DOMNodeInserted",function(e){
+				if (list.indexOf(e.target.nodeName.toLowerCase())<0){;
+					shield("插件嘗試建立未授權的物件");
+				}
+			});
 		}
 		
 		if (typeof(Storage) !== "undefined") {
@@ -131,50 +176,6 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		Object.preventExtensions(window.$me);
 		
 		HK.require("login");
-		
-		if (console.clear){
-			console.clear();
-		}
-		
-		var console_ = ["\n\n"];
-		for (var ii = 1; ii <= 45; ii++) {
-			console_[0]+= "%c██";
-			var a = "color:black;text-shadow:";			
-			for (var i = 1; i <= getlength(ii); i++) {
-				a+="0 "+i+"em 0 black";
-				if (i==getlength(ii)){
-					a+=";"
-				}else{
-					a+=","
-				}
-			}
-			console_.push(a);
-		}
-		function getlength(i){
-			if (i<4){
-				return 28;
-			}else if (8<i){
-				return 28;
-			}else{
-				return 36-i;
-			}
-		}		
-		console.log.apply(console,console_);
-		
-		console.info("  %c港人有%c云%c\n\n","color:white;width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體'","color:white;width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體';border-bottom: 1px dotted white;text-decoration: none;","");
-		console.log("  %c把文字貼在這裏，不會因此 ……","color:white");
-		console.group();
-		console.warn("  %c擁有管理權限","color:white");
-		console.warn("  %c獲得額外的功能","color:white");
-		console.warn("  %c速度得到優化","color:white");
-		console.warn("  %c重設登入次數","color:white");	
-		console.groupEnd();
-		console.log("\n  %c繼續要貼上的話，您 需承擔以下的可能性。","color:white");
-		console.group();
-		console.warn("  %c密碼外洩","color:white");
-		console.warn("  %c對話外洩","color:white");
-		console.warn("  %c帳號凍結","color:white");		
-		console.groupEnd();
 		
 	}
 	function shield(reason){
