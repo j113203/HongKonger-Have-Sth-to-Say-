@@ -71,13 +71,13 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 				function getlength(i){
 					if (i<4){
 						return 22;
-					}else if (30-i<22){
+					}else if (8<i){
 						return 22;
 					}else{
 						return 30-i;
 					}
 				}		
-				//console.log.apply(console,console_);
+				console.log.apply(console,console_);
 			};
 		})(window.console.clear);
 		
