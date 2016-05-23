@@ -77,7 +77,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 						return 30-i;
 					}
 				}		
-				console.log.apply(console,console_);
+				//console.log.apply(console,console_);
 			};
 		})(window.console.clear);
 		
@@ -130,23 +130,21 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 			};
 		})(window.XMLHttpRequest.prototype.open);
 		
-		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-		var list = ["h3","p","div","thead","tbody","a"];		
+		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;			
 		
 		if (MutationObserver){
+			var list = ["form","div","#text","table"];
 			(new MutationObserver(function(ee){	
-					ee.forEach(function(e){
-						for (var i = 0; i < e.addedNodes.length; i++){
-							for (var ii = 0; ii < e.addedNodes[i].childNodes.length; ii++){
-								if (list.indexOf(e.addedNodes[i].childNodes[ii].nodeName.toLowerCase())<0){									
-									shield("插件嘗試建立未授權的物件");
-								}
-							}							
+				for(var i=0; i<ee.length; ++i) {
+					for(var j=0; j<ee[i].addedNodes.length; ++j) {
+						if (list.indexOf(ee[i].addedNodes[j].nodeName.toLowerCase())<0){
+							shield("插件嘗試建立未授權的物件");
 						}
-					});
+					}
 				}
-			)).observe(document, {childList: true,subtree: true});
+			})).observe(document, {childList: true,subtree: true});
 		}else{
+			var list = ["div","form","table","p"];
 			$(document).on("DOMNodeInserted",function(e){
 				if (list.indexOf(e.target.nodeName.toLowerCase())<0){;
 					shield("插件嘗試建立未授權的物件");
