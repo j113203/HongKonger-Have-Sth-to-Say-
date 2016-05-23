@@ -155,7 +155,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		}
 		
 		if (typeof(Storage) !== "undefined") {
-			if (localStorage.getItem("login") && (parseInt(atob(localStorage.getItem("login"))) - Date.now()) > 1800000 ){
+			if (localStorage.getItem("login") && (Date.now() - parseInt(atob(localStorage.getItem("login")))) > 1800000 ){
 				localStorage.removeItem("login");
 			}
 			Storage.prototype.removeItem = function(){				
