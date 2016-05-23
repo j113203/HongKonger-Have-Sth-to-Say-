@@ -137,7 +137,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		}
 		
 		var console_ = ["\n\n"];
-		for (var ii = 1; ii <= 50; ii++) {
+		for (var ii = 1; ii <= 45; ii++) {
 			console_[0]+= "%c██";
 			var a = "color:black;text-shadow:";			
 			for (var i = 1; i <= getlength(ii); i++) {
