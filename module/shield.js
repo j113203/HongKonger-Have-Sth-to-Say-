@@ -36,47 +36,54 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		HK.require("index");
 	}else{
 		
+		(function(x) {			
+			window.console.clear = function() {
+				x.apply(this, arguments);
+				
+				console.info("%c港人有%c云%c\n\n","width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體'","width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體';border-bottom: 1px dotted #000;text-decoration: none;","");
+				console.group("把文字貼在這裏，不會因此 ……");
+					console.warn("擁有管理權限");
+					console.warn("獲得額外的功能");
+					console.warn("速度得到優化");
+					console.warn("重設登入次數");	
+				console.groupEnd();
+		
+				console.group("繼續要貼上的話，您 需承擔以下的可能性。");
+					console.warn("密碼外洩");
+					console.warn("對話外洩");
+					console.warn("帳號凍結");		
+				console.groupEnd();
+		
+				var console_ = ["\n\n"];
+				for (var ii = 1; ii <= 50; ii++) {
+					console_[0]+= "%c██";
+					var a = "color:black;text-shadow:";			
+					for (var i = 1; i <= getlength(ii); i++) {
+						a+="0 "+i+"em 0 black";
+						if (i==getlength(ii)){
+							a+=";"
+						}else{
+							a+=","
+						}
+					}
+					console_.push(a);
+				}
+				function getlength(i){
+					if (i<4){
+						return 22;
+					}else if (30-i<22){
+						return 22;
+					}else{
+						return 30-i;
+					}
+				}		
+				console.log.apply(console,console_);
+			};
+		})(window.console.clear);
+		
 		if (console.clear){
 			console.clear();
-		}				
-		console.info("%c港人有%c云%c\n\n","width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體'","width: 8em;font-size: 30px;font-weight: 300;font-family: '微軟正黑體';border-bottom: 1px dotted #000;text-decoration: none;","");
-		console.group("把文字貼在這裏，不會因此 ……");
-		console.warn("擁有管理權限");
-		console.warn("獲得額外的功能");
-		console.warn("速度得到優化");
-		console.warn("重設登入次數");	
-		console.groupEnd();
-		
-		console.group("繼續要貼上的話，您 需承擔以下的可能性。");
-		console.warn("密碼外洩");
-		console.warn("對話外洩");
-		console.warn("帳號凍結");		
-		console.groupEnd();
-		
-		var console_ = ["\n\n"];
-		for (var ii = 1; ii <= 50; ii++) {
-			console_[0]+= "%c██";
-			var a = "color:black;text-shadow:";			
-			for (var i = 1; i <= getlength(ii); i++) {
-				a+="0 "+i+"em 0 black";
-				if (i==getlength(ii)){
-					a+=";"
-				}else{
-					a+=","
-				}
-			}
-			console_.push(a);
 		}
-		function getlength(i){
-			if (i<4){
-				return 22;
-			}else if (30-i<22){
-				return 22;
-			}else{
-				return 30-i;
-			}
-		}		
-		console.log.apply(console,console_);
 		
 		(function(x) {			
 			window.HK.require = function() {

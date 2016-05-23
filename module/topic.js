@@ -1,6 +1,6 @@
 HK.container.callback(HK.title.show(unescape($me.topic),"話題載入中 ……"),function(){	
 	$.ajaxSetup({ cache: false });
-	$.getJSON( "JSON/topic.php?topic="+$me.topic , function(data){
+	$.getJSON( "https://rest.j113203.me/JSON/topic.php?topic="+$me.topic , function(data){
 		if (data){
 			output="";
 			$(data.posts).each(function(index, posts) {
