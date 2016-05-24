@@ -9,18 +9,22 @@ function oauth_login($id,$pd,$cache){
 	if ($id&&$pd&&$cache){
 		include 'database.php';
 		include 'ip.php';
-		$token = mongodb_GET("/oauth/user/$id");
+		$token = mongodb_GET("/oauth/user/$id");		
 		$token = json_decode($token, true);
-		$_etag = $token["_etag"]['$oid'];
-		$token = $token["pd"];
-		if (strlen($cache)==13 && ip_verify($cache) && strcmp ( $pd, $token ) == 0  ){
-			$token = bin2hex(openssl_random_pseudo_bytes(128));
-			mongodb_PATCH("/oauth/user/$id",array (
-				"token" => $token,
-				"ip" => ip_()
-			),$_etag);
-			ip_reset();
-			return $token;
+		if($token["http status code"]==404){
+			return "ip has been temporarily suspended";
+		}else{
+			$_etag = $token["_etag"]['$oid'];
+			$token = $token["pd"];
+			if (strlen($cache)==13 && ip_verify($cache) && strcmp ( $pd, $token ) == 0  ){
+				$token = bin2hex(openssl_random_pseudo_bytes(128));
+				mongodb_PATCH("/oauth/user/$id",array (
+					"token" => $token,
+					"ip" => ip_()
+				),$_etag);
+				ip_reset();
+				return $token;
+			}
 		}
 	}
 	return "ip has been temporarily suspended";
