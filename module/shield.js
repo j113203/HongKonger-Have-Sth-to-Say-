@@ -87,9 +87,8 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		
 		(function(x) {			
 			window.HK.require = function() {
-				//console.log("require");
 				if (UUID(UUID_+"#########2z689##$",UUID_+"###1###2z689##$",UUID_+"###1#####1#1$",UUID_+"###1##onclick#$",UUID_+"#####1#1$",
-						UUID_+"########fireWith81z689##$",UUID_+"###1##fireWith81z689##$",UUID_+"####dispatch671#1$",UUID_+"##search95####dispatch671#1$",UUID_+"##search95##onclick#$",UUID_+"##post49##onclick#$")){
+						UUID_+"######i#fireWith81z689##$",UUID_+"###1##fireWith81z689##$",UUID_+"####dispatch671#1$",UUID_+"##search95####dispatch671#1$",UUID_+"##search95##onclick#$",UUID_+"##post49##onclick#$")){
 					x.apply(this, arguments);
 				}else{
 					shield("插件嘗試直接存取保護模組");
