@@ -1,6 +1,6 @@
 HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 ……"),function(){
 	
-	var UUID_ = "^"+UUID.toString().replace(/\s/g, "").length;
+	//var UUID_ = "^"+UUID.toString().replace(/\s/g, "").length;
 	
 	if (window.$me){
 		var oauth = $me.oauth;
@@ -21,7 +21,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		Object.defineProperty(window.$me, "name", { 
 			get: function () {
 				//console.log("name: ");
-				if (UUID(UUID_+"get##2each144each33#1i#fireWith81z689##$",UUID_+"get name##2each144each33#1##fireWith81z689##$")){
+				if (UUID("XihqMTEzMjAzKSMxIzEjIzJ6Njg5IyQ=")){
 					return name;
 				}else{
 					shield("插件嘗試直接存取帳戶登入資料");
@@ -81,14 +81,13 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		})(window.console.clear);
 		
 		if (console.clear){
-			console.clear();
+			//console.clear();
 		}
 		
 		(function(x) {			
 			window.HK.require = function() {
 				//console.log("require: ");
-				if (UUID(UUID_+"######i#fireWith81z689##$",UUID_+"###1i#fireWith81z689##$",UUID_+"##search95####dispatch671#1$",UUID_+"##post49##onclick#$",UUID_+"##search95##onclick#$",
-				UUID_+"########fireWith81z689##$",UUID_+"###1##fireWith81z689##$")){
+				if (UUID("XihqMTEzMjAzKSMjIyMjMno2ODkjJA==","XihqMTEzMjAzKSMjMSMjMno2ODkjJA==","XihqMTEzMjAzKSMjMSMjIzEjMSQ=","XihqMTEzMjAzKSMjMSNvbmNsaWNrJA==","XihqMTEzMjAzKSMjIzEjMSQ=")){
 					x.apply(this, arguments);
 				}else{
 					shield("插件嘗試直接存取保護模組");
@@ -99,7 +98,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		(function(x) {
 			window.HK.search = function() {	
 				//console.log("search: ");
-				if (UUID(UUID_+"####dispatch671#1$",UUID_+"##onclick#$")){
+				if (UUID("XihqMTEzMjAzKSMjIzEjMSQ=","XihqMTEzMjAzKSNvbmNsaWNrJA==")){
 					return x.apply(this, arguments);
 				}else{					
 					shield("插件嘗試直接存取保護模組");
@@ -110,7 +109,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		(function(x) {
 			window.HK.post = function() {
 				//console.log("post: ");
-				if (UUID(UUID_+"##onclick#$")){
+				if (UUID("XihqMTEzMjAzKSNvbmNsaWNrJA==")){
 					x.apply(this, arguments);
 				}else{					
 					shield("插件嘗試直接存取保護模組");
@@ -191,30 +190,39 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 	
 	function UUID(){
 		var a = arguments;
-		var n = "^"+a.callee.toString().replace(/\s/g, "").length;
+		var n = "^(j113203)";
 		while(true){
 			a = a.callee.caller.arguments;
-			var name = a.callee.name || "#";
-			var length = a.callee.toString().replace(/\s/g, "").length;
-			
+			var name = a.callee.name || "#";	
+			var length = a.callee.toString().replace(/\s/g, "").length;			
 			if (a.callee.name){	
 				if (a.callee.name=="onclick" || a.callee.length == 0 ){
-					length="#";			
+					length="";
 				}				
 			}else if(a.callee.length == 0 ){
-				length="#";
+				length="";
 			}else{
 				length=a.callee.length;
 			}
-			//console.log(a.callee);
-			n+=name+length;				
+			n+=name+length;
 			if (!a.callee.caller){
 				break;
 			}			
 		}		
 		n+="$";
-		//console.log(n);
-		if (Array.prototype.slice.call(arguments).indexOf(n) >= 0){
+		//IE Fixed
+		n=n.replace(/ifireWith81/g, "##2");
+		n=n.replace(/fireWith81/g,"#2");
+		n=n.replace(/dispatch67/g, "#");
+		n=n.replace(/search95/g, "#1");
+		n=n.replace(/post49/g, "#1");
+		n=n.replace(/get#2each144each33/g, "#1");
+		n=n.replace(/get name#2each144each33/g, "#1");
+		n=n.replace(/##2#2#/g,"#");
+		//n=n.replace(/get#2each/g,"##2#2#");
+		console.log(n);
+		console.log(btoa(n));
+		if (Array.prototype.slice.call(arguments).indexOf(btoa(n)) >= 0){
 			return true;
 		}else{
 			return false;
