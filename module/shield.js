@@ -21,8 +21,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		Object.defineProperty(window.$me, "name", { 
 			get: function () {
 				//console.log("name: ");
-				if (UUID(UUID_+"###2#2#1#1###2z689##$",
-						UUID_+"get name##2each144each33#1##fireWith81z689##$")){
+				if (UUID(UUID_+"get##2each144each33#1i#fireWith81z689##$")){
 					return name;
 				}else{
 					shield("插件嘗試直接存取帳戶登入資料");
@@ -87,8 +86,8 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		
 		(function(x) {			
 			window.HK.require = function() {
-				if (UUID(UUID_+"#########2z689##$",UUID_+"###1###2z689##$",UUID_+"###1#####1#1$",UUID_+"###1##onclick#$",UUID_+"#####1#1$",
-						UUID_+"######i#fireWith81z689##$",UUID_+"###1##fireWith81z689##$",UUID_+"####dispatch671#1$",UUID_+"##search95####dispatch671#1$",UUID_+"##search95##onclick#$",UUID_+"##post49##onclick#$")){
+				//console.log("require: ");
+				if (UUID(UUID_+"######i#fireWith81z689##$",UUID_+"###1i#fireWith81z689##$",UUID_+"##search95####dispatch671#1$",UUID_+"##post49##onclick#$",UUID_+"##search95##onclick#$")){
 					x.apply(this, arguments);
 				}else{
 					shield("插件嘗試直接存取保護模組");
@@ -99,8 +98,7 @@ HK.container.callback(HK.title.show("安全檢查","正在檢查您的瀏覽器 
 		(function(x) {
 			window.HK.search = function() {	
 				//console.log("search: ");
-				if (UUID(UUID_+"#####1#1$",UUID_+"##onclick#$",
-						UUID_+"####dispatch671#1$")){
+				if (UUID(UUID_+"####dispatch671#1$",UUID_+"##onclick#$")){
 					return x.apply(this, arguments);
 				}else{					
 					shield("插件嘗試直接存取保護模組");
