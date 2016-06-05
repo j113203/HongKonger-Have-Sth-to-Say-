@@ -32,7 +32,7 @@
 <link href="css/core.css" rel="stylesheet" type="text/css" defer async>
 <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" defer async>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" defer async>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" type="text/javascript" defer async></script>
+<script src="js/jquery.min.js" type="text/javascript" defer async></script>
 <script defer async>
 (function(){
 	window.addEventListener("load",function(){	
@@ -61,8 +61,7 @@
 				HK.TEMPpool= new Object;
 				HK.container.element.html(HK.title.show("模組: "+page,"載入中 ……"));
 				$.ajaxSetup({ cache: true });
-				$.getScript( "module/"+page+".js" , function(){
-					
+				$.getScript( "module/"+page+".js" , function(){					
 					HK.container.element.html(HK.container.html);
 					HK.container.script();
 					HK.container.script=function(){};
